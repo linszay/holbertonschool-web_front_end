@@ -1,0 +1,17 @@
+/* assigns text color to body and p */
+/* assigns background color to body and h2 */
+$txtcolor: #3D3D3D;
+$bckgrndcolor: #6D6D6D;
+
+body {
+    color: $txtcolor;
+    background-color: $bckgrndcolor;
+}
+
+p {
+    color: $txtcolor;
+}
+
+h2 {
+    background-color: $bckgrndcolor;
+}
