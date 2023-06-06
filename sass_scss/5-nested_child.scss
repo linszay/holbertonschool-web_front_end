@@ -1,5 +1,7 @@
 /* even more nested declaratoins for class red that are first children of body */
 body {
-    color: #3D3D3D; }
+    color: #3D3D3D;
     > .red {
-      color: #FF0000; }
+      color: #FF0000;
+    }
+}
