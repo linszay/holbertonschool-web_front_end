@@ -16,7 +16,7 @@
             var firstname = document.getElementById('firstname').value;
             var email = document.getElementById('email').value;
             var expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 10);
+            expirationDate.setDate(expirationDate.getDate() + 10 * 24 * 60 * 1000);
             var utcExpirationDate = expirationDate.toUTCString();
             document.cookie = "firstname=" + firstname + ";";
             document.cookie = "email=" + email + ";";
