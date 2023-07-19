@@ -1,18 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 
-    <head>
-        <meta charset="utf-8">
-        <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-        <style>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js" integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <title>Task 0</title>
+    <style>
         .loading {
             opacity: 0.2;
         }
         </style>
-    </head>
+</head>
 
-    <body>
-        <script type="application/javascript">
+<body>
+    <script type="application/javascript">
         $(document).ready(function() {
             createSearchForm();
             var itemsPerPage = 10;
@@ -27,14 +28,19 @@
                         queryWikipedia(searchValue, currentOffset);
                     }).append(
                         $('<input>').attr('type', 'text'),
-                        $('<input>').attr('type', 'submit').val('Search'),
-                        $('<ul>').attr('id', 'pagination')
-                    )
+                        $('<input>').attr('type', 'submit').val('Submit')
+                    ),
+                    $('<ul>').attr('id', 'resultsList')
+                );
+
+                // Create pagination ul element and append it to the body
+                $('body').append(
+                    $('<ul>').attr('id', 'pagination')
                 );
             }
 
             function addNewArticle(id, title, snippet) {
-                $('ul').append(
+                $('#resultsList').append(
                     $('<li>').append(
                         $('<p>').html('<span>' + id + ' - <b>' + title + '</b></span>'),
                         $('<p>').html(snippet)
@@ -80,7 +86,7 @@
                 paginationList.empty();
 
                 for (var i = 0; i < totalPages; i++) {
-                    var pageItem = $('<li>').text(i + 1).css('cursor', 'pointer').css('margin-left', '10px');
+                    var pageItem = $('<li>').text(i + 1).css('cursor', 'pointer').css('margin-left', '10px').css('display', 'inline');
                     if (i === currentOffset / itemsPerPage) {
                         pageItem.css('font-weight', 'bold');
                     }
@@ -103,6 +109,7 @@
                 }
             }
         });
-        </script>
-    </body>
+    </script>
+</body>
+
 </html>
