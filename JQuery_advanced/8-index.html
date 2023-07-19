@@ -23,14 +23,19 @@
                         queryWikipedia(searchValue, currentOffset);
                     }).append(
                         $('<input>').attr('type', 'text'),
-                        $('<input>').attr('type', 'submit').val('Submit'),
-                        $('<ul>').attr('id', 'pagination')
-                    )
+                        $('<input>').attr('type', 'submit').val('Submit')
+                    ),
+                    $('<ul>').attr('id', 'resultsList')
+                );
+
+                // Create pagination ul element and append it to the body
+                $('body').append(
+                    $('<ul>').attr('id', 'pagination')
                 );
             }
 
             function addNewArticle(id, title, snippet) {
-                $('ul').append(
+                $('#resultsList').append(
                     $('<li>').append(
                         $('<p>').html('<span>' + id + ' - <b>' + title + '</b></span>'),
                         $('<p>').html(snippet)
@@ -44,6 +49,7 @@
                     list: 'search',
                     srsearch: search,
                     format: 'json',
+                    sroffset: offset,
                 };
 
                 $.ajax({
@@ -53,11 +59,11 @@
                     success: function(response) {
                         var searchResults = response.query.search;
                         var totalHits = response.query.searchinfo.totalhits;
-                        $('ul').empty();
+                        buildPagination(totalHits, itemsPerPage, offset);
+                        $('#resultsList').empty();
                         searchResults.forEach(function(result) {
                             addNewArticle(result.pageid, result.title, result.snippet);
                         });
-                        buildPagination(totalHits, itemsPerPage, offset);
                     },
                     error: function(error) {
                         console.log('Error fetching data from Wikipedia:', error);
@@ -71,7 +77,7 @@
                 paginationList.empty();
 
                 for (var i = 0; i < totalPages; i++) {
-                    var pageItem = $('<li>').text(i + 1).css('cursor', 'pointer').css('margin-left', '10px');
+                    var pageItem = $('<li>').text(i + 1).css('cursor', 'pointer').css('margin-left', '10px').css('display', 'inline');
                     if (i === currentOffset / itemsPerPage) {
                         pageItem.css('font-weight', 'bold');
                     }
@@ -87,4 +93,5 @@
         });
     </script>
 </body>
+
 </html>
