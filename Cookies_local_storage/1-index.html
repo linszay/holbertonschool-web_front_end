@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title>Cookie Handling</title>
+</head>
+<body>
+    <h1>Login to the website</h1>
+    <input type="text" id="firstname" placeholder="Firstname">
+    <input type="text" id="email" placeholder="email">
+    <button onclick="setCookies()">Log me in</button>
+    <h1>Cookies</h1>
+    <button onclick="showCookies()">Show the cookies</button>
+    <script>
+        function setCookies() {
+            var firstname = document.getElementById('firstname').value;
+            var email = document.getElementById('email').value;
+            var expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 10);
+            var utcExpirationDate = expirationDate.toUTCString();
+            document.cookie = "firstname=" + firstname + ";";
+            document.cookie = "email=" + email + ";";
+            alert("Cookies set successfully! :)");
+        }
+
+        function showCookies() {
+            var cookies = document.cookie.split(';');
+            var cookiesData = "Cookies:";
+            for (var i = 0; i < cookies.length; i++) {
+                cookiesData += "\n" + cookies[i].trim();
+            }
+            var paragraph = document.createElement('p');
+            paragraph.innerHTML = cookiesData;
+            document.body.appendChild(paragraph);
+        }
+    </script>
+</body>
+</html>
