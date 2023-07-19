@@ -2,82 +2,52 @@
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@3.0.1/dist/js.cookie.min.js"></script>
-    <title>Cookie Handling</title>
+    <title>Basic Shopping Cart</title>
 </head>
 <body>
-    <h1>Login to the website</h1>
-    <input type="text" id="firstname" placeholder="Firstname">
-    <input type="text" id="email" placeholder="email">
-    <button onclick="setCookies()">Log me in</button>
-    <h1>Cookies</h1>
-    <button onclick="showCookies()">Show the cookies</button>
-    <div id="loginForm" style="display: none;">
-        <h2>Login Form</h2>
-        <input type="text" id="loginFirstname" placeholder="Firstname">
-        <input type="text" id="loginEmail" placeholder="Email">
-        <button onclick="setCookies()">Log me in</button>
-    </div>
     <script>
-        function setCookies() {
-            var firstname = document.getElementById('firstname').value;
-            var email = document.getElementById('email').value;
-            var expirationDate = new Date();
-            expirationDate.setDate(expirationDate.getDate() + 10 * 24 * 60 * 1000);
-            var utcExpirationDate = expirationDate.toUTCString();
-            Cookies.set("firstname", firstname);
-            Cookies.set("email", email);
-            showWelcomeMessageOrForm();
-            alert("Cookies set successfully! :)");
+        var availableItems = ["Shampoo", "Soap", "Sponge", "Water"];
+
+        if (typeof(Storage) === "undefined") {
+            alert("Sorry, your browser does not support Web storage. Try again with a better one");
+        } else {
+            createStore();
+            displayCart();
         }
 
-        function showCookies() {
-            var firstname = Cookies.get("firstname");
-            var email = Cookies.get("email");
-            var cookiesData = "Email: " + email + " - Firstname: " + firstname;
-            var paragraph = document.createElement('p');
-            paragraph.innerHTML = cookiesData;
-            document.body.appendChild(paragraph);
+        function addItemToCart(item) {
+            localStorage.setItem(item, "true");
+            displayCart();
         }
 
-        function showForm() {
-            var welcomeMessage = document.getElementById('welcomeMessage');
-            if (welcomeMessage) {
-                welcomeMessage.remove();
+        function createStore() {
+            var ul = document.createElement("ul");
+            document.body.appendChild(ul);
+            
+            availableItems.forEach(function(item) {
+                var li = document.createElement("li");
+                li.textContent = item;
+                li.addEventListener("click", function() {
+                    addItemToCart(item);
+                });
+                ul.appendChild(li);
+            });
+        }
+
+        function displayCart() {
+            var cartItems = 0;
+            for (var i = 0; i < localStorage.length; i++) {
+                var key = localStorage.key(i);
+                if (localStorage.getItem(key) === "true") {
+                    cartItems++;
+                }
             }
-            var loginForm = document.getElementById('loginForm');
-            loginForm.style.display = 'block';
-        }
 
-        function hideForm() {
-            var loginForm = document.getElementById('loginForm');
-            loginForm.style.display = 'none';
-        }
-
-        function deleteCookiesAndShowForm() {
-            Cookies.remove("firstname");
-            Cookies.remove("email");
-            showForm();
-        }
-
-        function showWelcomeMessageOrForm() {
-            var firstname = getCookie("firstname");
-            if (firstname) {
-                var welcomeMessage = document.createElement('h1');
-                welcomeMessage.id = 'welcomeMessage';
-                welcomeMessage.textContent = 'Welcome ' + firstname + ' (logout)';
-                welcomeMessage.style.fontStyle = 'italic';
-                welcomeMessage.style.fontWeight = 'normal';
-                welcomeMessage.style.marginLeft = '10px';
-                welcomeMessage.style.cursor = 'pointer';
-                welcomeMessage.onclick = function() {
-                    deleteCookiesAndShowForm();
-                    welcomeMessage.remove();
-                };
-                document.body.innerHTML = '';
-                document.body.appendChild(welcomeMessage);
-            } else {
-                showForm();
+            if (cartItems > 0) {
+                var cartMessage = "You previously had " + cartItems + " item(s) in your cart";
+                var p = document.createElement("p");
+                p.textContent = cartMessage;
+                document.body.appendChild(p);
             }
         }
     </script>
